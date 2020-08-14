@@ -1,0 +1,53 @@
+{
+  "textures": {
+    "particle": "storagedrawers:blocks/indicator/lock_icon",
+    "lock": "storagedrawers:blocks/indicator/lock_icon"
+  },
+  "uvlock": false,
+  "elements": [
+    {
+      "from": [7.25, 14.25, -0.05],
+      "to": [8.75, 15.75, 0.05],
+      "faces": {
+        "north": {
+          "texture": "#lock",
+          "uv": [0, 0, 16, 16],
+          "cullface": "north"
+        }
+      }
+    },
+    {
+      "from": [7.25, 14.25, 15.95],
+      "to": [8.75, 15.75, 16.05],
+      "faces": {
+        "south": {
+          "texture": "#lock",
+          "uv": [0, 0, 16, 16],
+          "cullface": "south"
+        }
+      }
+    },
+    {
+      "from": [-0.05, 14.25, 7.25],
+      "to": [0.05, 15.75, 8.75],
+      "faces": {
+        "west": {
+          "texture": "#lock",
+          "uv": [0, 0, 16, 16],
+          "cullface": "west"
+        }
+      }
+    },
+    {
+      "from": [15.95, 14.25, 7.25],
+      "to": [16.05, 15.75, 8.75],
+      "faces": {
+        "east": {
+          "texture": "#lock",
+          "uv": [0, 0, 16, 16],
+          "cullface": "east"
+        }
+      }
+    }
+  ]
+}

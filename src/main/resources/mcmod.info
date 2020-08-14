@@ -1,0 +1,17 @@
+[
+{
+  "modid": "fluiddrawers",
+  "name": "Fluid Drawers",
+  "description": "A Storage Drawers addon that allows the storage of fluids in drawer networks.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["phantamanta44"],
+  "logoFile": "",
+  "screenshots": [],
+  "useDependencyInformation": true,
+  "dependencies": ["libnine", "storagedrawers"],
+  "requiredMods": ["libnine@[1.1.9,)", "storagedrawers"]
+}
+]

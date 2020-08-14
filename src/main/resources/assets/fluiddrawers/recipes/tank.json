@@ -1,0 +1,25 @@
+{
+  "type": "forge:ore_shaped",
+  "result": {
+    "item": "fluiddrawers:tank",
+    "count": 1,
+    "data": 0
+  },
+  "pattern": [
+    "GPG",
+    "GBG",
+    "GPG"
+  ],
+  "key": {
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "paneGlass"
+    },
+    "P": {
+      "item": "minecraft:heavy_weighted_pressure_plate"
+    },
+    "B": {
+      "item": "minecraft:bucket"
+    }
+  }
+}

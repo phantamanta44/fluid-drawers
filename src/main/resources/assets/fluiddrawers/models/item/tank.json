@@ -1,0 +1,12 @@
+{
+  "9s": "pi",
+  "archetype": {
+    "parent": "fluiddrawers:block/tank"
+  },
+  "mutations": {
+    "sealed": {
+      "true": "supplant fluiddrawers:item/tank_sealed",
+      "false": {}
+    }
+  }
+}

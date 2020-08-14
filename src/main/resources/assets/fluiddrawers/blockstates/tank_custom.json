@@ -1,0 +1,34 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "fluiddrawers:tank_custom"
+  },
+  "variants": {
+    "locked": {
+      "true": {
+        "submodel": "fluiddrawers:lock_part"
+      },
+      "false": {}
+    },
+    "voiding": {
+      "true": {
+        "submodel": "fluiddrawers:void_part"
+      },
+      "false": {}
+    },
+    "sealed": {
+      "true": {
+        "submodel": "fluiddrawers:seal_part"
+      },
+      "false": {}
+    },
+    "secure": {
+      "true": {},
+      "false": {}
+    },
+    "vending": {
+      "true": {},
+      "false": {}
+    }
+  }
+}

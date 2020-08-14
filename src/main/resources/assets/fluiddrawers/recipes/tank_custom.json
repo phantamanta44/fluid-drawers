@@ -1,0 +1,23 @@
+{
+  "type": "forge:ore_shaped",
+  "result": {
+    "item": "fluiddrawers:tank_custom",
+    "count": 1,
+    "data": 0
+  },
+  "pattern": [
+    "SSS",
+    "STS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    "T": {
+      "item": "fluiddrawers:tank",
+      "data": 0
+    }
+  }
+}

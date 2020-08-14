@@ -1,0 +1,18 @@
+{
+  "9s": "pi",
+  "archetype": {
+    "9s": "fluiddrawers:framed",
+    "backing": "fluiddrawers:block/tank_custom_base",
+    "default_textures": {
+      "front": "storagedrawers:blocks/drawers_raw_side",
+      "side": "storagedrawers:blocks/drawers_raw_side",
+      "trim": "storagedrawers:blocks/drawers_raw_side"
+    }
+  },
+  "mutations": {
+    "sealed": {
+      "true": "supplant fluiddrawers:item/tank_custom_sealed",
+      "false": {}
+    }
+  }
+}

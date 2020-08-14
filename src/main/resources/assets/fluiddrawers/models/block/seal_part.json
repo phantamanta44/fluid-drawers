@@ -1,0 +1,31 @@
+{
+  "textures": {
+    "particle": "storagedrawers:blocks/tape",
+    "tape": "storagedrawers:blocks/tape"
+  },
+  "uvlock": true,
+  "elements": [
+    {
+      "from": [-0.1, 0, -0.1],
+      "to": [16.1, 16, 16.1],
+      "faces": {
+        "north": {
+          "texture": "#tape",
+          "cullface": "north"
+        },
+        "south": {
+          "texture": "#tape",
+          "cullface": "south"
+        },
+        "west": {
+          "texture": "#tape",
+          "cullface": "west"
+        },
+        "east": {
+          "texture": "#tape",
+          "cullface": "east"
+        }
+      }
+    }
+  ]
+}

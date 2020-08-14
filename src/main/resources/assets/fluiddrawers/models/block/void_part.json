@@ -1,0 +1,53 @@
+{
+  "textures": {
+    "particle": "storagedrawers:blocks/indicator/void_icon",
+    "void": "storagedrawers:blocks/indicator/void_icon"
+  },
+  "uvlock": false,
+  "elements": [
+    {
+      "from": [0.25, 14.25, -0.05],
+      "to": [1.75, 15.75, 0.05],
+      "faces": {
+        "north": {
+          "texture": "#void",
+          "uv": [0, 0, 16, 16],
+          "cullface": "north"
+        }
+      }
+    },
+    {
+      "from": [14.25, 14.25, 15.95],
+      "to": [15.75, 15.75, 16.05],
+      "faces": {
+        "south": {
+          "texture": "#void",
+          "uv": [0, 0, 16, 16],
+          "cullface": "south"
+        }
+      }
+    },
+    {
+      "from": [-0.05, 14.25, 14.25],
+      "to": [0.05, 15.75, 15.75],
+      "faces": {
+        "west": {
+          "texture": "#void",
+          "uv": [0, 0, 16, 16],
+          "cullface": "west"
+        }
+      }
+    },
+    {
+      "from": [15.95, 14.25, 0.25],
+      "to": [16.05, 15.75, 1.75],
+      "faces": {
+        "east": {
+          "texture": "#void",
+          "uv": [0, 0, 16, 16],
+          "cullface": "east"
+        }
+      }
+    }
+  ]
+}
