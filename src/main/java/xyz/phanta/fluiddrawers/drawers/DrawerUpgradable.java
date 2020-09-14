@@ -6,6 +6,6 @@ public interface DrawerUpgradable {
 
     UpgradeData getUpgrades();
 
-    void markDirty();
+    void notifyChanged();
 
 }

@@ -26,7 +26,7 @@ public class UpgradeItemHandler implements IItemHandlerModifiable {
     @Override
     public void setStackInSlot(int slot, ItemStack stack) {
         tile.getUpgrades().setUpgrade(slot, stack);
-        tile.markDirty();
+        tile.notifyChanged();
     }
 
     @Override

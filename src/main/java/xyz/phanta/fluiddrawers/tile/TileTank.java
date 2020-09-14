@@ -290,6 +290,11 @@ public class TileTank extends ChamTileEntity implements FluidDrawerHost, DrawerU
     }
 
     @Override
+    public void notifyChanged() {
+        markDirty();
+    }
+
+    @Override
     public boolean dataPacketRequiresRenderUpdate() {
         return true;
     }
