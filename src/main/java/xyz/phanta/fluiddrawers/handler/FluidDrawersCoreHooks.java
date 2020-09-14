@@ -30,4 +30,9 @@ public class FluidDrawersCoreHooks {
                 ? ((FramedItem)item).createFramedStack(target, matSide, matTrim, matFront) : ItemStack.EMPTY;
     }
 
+    @Reflected
+    public static boolean isFramedItem(ItemStack stack) {
+        return stack.getItem() instanceof FramedItem;
+    }
+
 }

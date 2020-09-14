@@ -63,9 +63,9 @@ class TransformClassTileEntityFramingTable extends ClassVisitor {
                     state = 4;
                     super.visitJumpInsn(shortCircuitJumpInsn, shortCircuitJumpTarget);
                     super.visitVarInsn(Opcodes.ALOAD, 0);
-                    super.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                            "net/minecraft/item/ItemStack", "getItem", "()Lnet/minecraft/item/Item;", false);
-                    super.visitTypeInsn(Opcodes.INSTANCEOF, "xyz/phanta/fluiddrawers/item/base/FramedItem");
+                    super.visitMethodInsn(Opcodes.INVOKESTATIC,
+                            "xyz/phanta/fluiddrawers/handler/FluidDrawersCoreHooks", "isFramedItem",
+                            "(Lnet/minecraft/item/ItemStack;)Z", false);
                     break;
             }
             super.visitJumpInsn(opcode, label);
