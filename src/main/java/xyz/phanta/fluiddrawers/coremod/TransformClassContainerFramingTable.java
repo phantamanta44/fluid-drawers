@@ -37,7 +37,7 @@ class TransformClassContainerFramingTable extends ClassVisitor {
                     }
                     break;
                 case Opcodes.GETSTATIC:
-                    if (good && name.equals("EMPTY") && owner.equals("net/minecraft/item/ItemStack")) {
+                    if (good && (name.equals("EMPTY") || name.equals("field_190927_a")) && owner.equals("net/minecraft/item/ItemStack")) {
                         super.visitVarInsn(Opcodes.ALOAD, 2);
                         super.visitVarInsn(Opcodes.ALOAD, 3);
                         super.visitVarInsn(Opcodes.ALOAD, 4);
