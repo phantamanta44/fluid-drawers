@@ -13,7 +13,8 @@ class TransformClassContainerFramingTable extends ClassVisitor {
 
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
-        if (name.equals("onCraftMatrixChanged") && desc.equals("(Lnet/minecraft/inventory/IInventory;)V")) {
+        if ((name.equals("onCraftMatrixChanged") || name.equals("func_75130_a"))
+                && desc.equals("(Lnet/minecraft/inventory/IInventory;)V")) {
             return new TransformMethodOnCraftMatrixChanged(api, super.visitMethod(access, name, desc, signature, exceptions));
         }
         return super.visitMethod(access, name, desc, signature, exceptions);

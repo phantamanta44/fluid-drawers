@@ -9,6 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.ItemHandlerHelper;
 import xyz.phanta.fluiddrawers.block.BlockTankCustom;
 import xyz.phanta.fluiddrawers.item.base.FramedItem;
 import xyz.phanta.fluiddrawers.tile.TileTankCustom;
@@ -31,17 +32,17 @@ public class ItemBlockTankCustom extends ItemBlockTank implements FramedItem {
     @Override
     public ItemStack createFramedStack(ItemStack stack, ItemStack matSide, ItemStack matTrim, ItemStack matFront) {
         MaterialData materialData = new MaterialData();
-        materialData.setSide(matSide);
-        materialData.setTrim(matTrim);
-        materialData.setFront(matFront);
-        ItemStack newStack = stack.copy();
-        NBTTagCompound tag = newStack.getTagCompound();
+        materialData.setSide(ItemHandlerHelper.copyStackWithSize(matSide, 1));
+        materialData.setTrim(ItemHandlerHelper.copyStackWithSize(matTrim, 1));
+        materialData.setFront(ItemHandlerHelper.copyStackWithSize(matFront, 1));
+        stack = ItemHandlerHelper.copyStackWithSize(stack, 1);
+        NBTTagCompound tag = stack.getTagCompound();
         if (tag == null) {
             tag = new NBTTagCompound();
         }
         materialData.writeToNBT(tag);
-        newStack.setTagCompound(tag);
-        return newStack;
+        stack.setTagCompound(tag);
+        return stack;
     }
 
     @Override
