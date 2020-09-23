@@ -1,0 +1,8 @@
+itemGroup.fluiddrawers=储液抽屉
+
+tile.fluiddrawers:tank0.name=储液抽屉
+tile.fluiddrawers:tank_custom0.name=镶框储液抽屉
+
+fluiddrawers.container.tank=储液抽屉配置
+
+fluiddrawers.info.tank_capacity=初始可储存%,d mB流体
