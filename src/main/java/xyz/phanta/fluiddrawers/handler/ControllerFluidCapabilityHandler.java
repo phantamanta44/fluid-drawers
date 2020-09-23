@@ -8,6 +8,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
@@ -23,6 +24,7 @@ import xyz.phanta.fluiddrawers.FluidDrawersMod;
 import xyz.phanta.fluiddrawers.drawers.FluidControllerProxy;
 import xyz.phanta.fluiddrawers.drawers.FluidDrawerController;
 
+import javax.annotation.Nullable;
 import java.util.Objects;
 
 public class ControllerFluidCapabilityHandler {
@@ -43,35 +45,36 @@ public class ControllerFluidCapabilityHandler {
     @SubscribeEvent
     public void onInteractWithBlock(PlayerInteractEvent.RightClickBlock event) {
         World world = event.getWorld();
-        if (world.isRemote) {
-            return;
-        }
         BlockPos pos = event.getPos();
         EnumFacing face = event.getFace();
         IBlockState state = world.getBlockState(pos);
         if (state.getBlock() != ModBlocks.controller || face != state.getValue(BlockController.FACING)) {
             return;
         }
-        TileEntity tile = world.getTileEntity(pos);
-        if (!(tile instanceof TileEntityController)
-                || !tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face)) {
-            return;
+        if (handleTankInteraction(world.getTileEntity(pos), face, event.getEntityPlayer(), event.getHand())) {
+            event.setCanceled(true);
+            event.setCancellationResult(EnumActionResult.SUCCESS);
         }
-        EntityPlayer player = event.getEntityPlayer();
-        EnumHand hand = event.getHand();
+    }
+
+    public static boolean handleTankInteraction(@Nullable TileEntity tile, @Nullable EnumFacing face,
+                                                EntityPlayer player, EnumHand hand) {
+        if (!(tile instanceof TileEntityController) || !tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face)) {
+            return false;
+        }
         ItemStack container = player.getHeldItem(hand);
-        if (container.isEmpty()) {
-            return;
+        if (container.isEmpty() || !container.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
+            return false;
         }
         FluidActionResult result = FluidUtil.tryEmptyContainer(container,
                 Objects.requireNonNull(tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face)),
-                Integer.MAX_VALUE, player, true);
+                Integer.MAX_VALUE, player, !player.world.isRemote);
         if (result.success) {
-            if (!player.capabilities.isCreativeMode) {
+            if (!player.world.isRemote && !player.capabilities.isCreativeMode) {
                 player.setHeldItem(hand, result.result);
             }
-            event.setCanceled(true);
         }
+        return true;
     }
 
 }

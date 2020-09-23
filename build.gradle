@@ -2,16 +2,17 @@ buildscript {
     repositories {
         jcenter()
         maven { url = "http://files.minecraftforge.net/maven" }
+        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath "com.wynprice.cursemaven:CurseMaven:2.1.4"
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
-//Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+apply plugin: "com.wynprice.cursemaven"
 
-
-version = "1.0.1"
+version = "1.0.2"
 group = "xyz.phanta.fluiddrawers"
 archivesBaseName = "fluiddrawers-1.12.2"
 
@@ -37,6 +38,7 @@ dependencies {
     compile 'io.github.phantamanta44.libnine:libnine-1.12.2:1.1.9'
     deobfCompile "com.jaquadro.minecraft.chameleon:Chameleon:1.12-4.1.3"
     deobfCompile "com.jaquadro.minecraft.storagedrawers:StorageDrawers:1.12.2-5.4.2"
+    deobfCompile "curse.maven:framed-compacting-drawers:3015136" // 1.2.7
 }
 
 jar {
