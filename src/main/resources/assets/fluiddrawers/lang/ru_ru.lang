@@ -1,0 +1,8 @@
+itemGroup.fluiddrawers=Fluid Drawers
+
+tile.fluiddrawers:tank0.name=Базовый резервуар
+tile.fluiddrawers:tank_custom0.name=Обрамлённый ящик
+
+fluiddrawers.container.tank=Резервуар
+
+fluiddrawers.info.tank_capacity=Вмещает %,d мВ на резервуар
