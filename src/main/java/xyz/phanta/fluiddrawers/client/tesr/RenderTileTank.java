@@ -1,5 +1,6 @@
 package xyz.phanta.fluiddrawers.client.tesr;
 
+import io.github.phantamanta44.libnine.util.format.TextFormatUtils;
 import io.github.phantamanta44.libnine.util.math.MathUtils;
 import io.github.phantamanta44.libnine.util.render.FluidRenderUtils;
 import net.minecraft.client.gui.FontRenderer;
@@ -65,6 +66,11 @@ public class RenderTileTank<T extends TileTank> extends TileEntitySpecialRendere
             return;
         }
 
+        int fluidCol = fluid.getFluid().getColor(fluid);
+        float r = TextFormatUtils.getComponent(fluidCol, 2);
+        float g = TextFormatUtils.getComponent(fluidCol, 1);
+        float b = TextFormatUtils.getComponent(fluidCol, 0);
+
         float fillPercent;
         float alpha;
         if (vending) {
@@ -89,20 +95,20 @@ public class RenderTileTank<T extends TileTank> extends TileEntitySpecialRendere
         BufferBuilder buf = tess.getBuffer();
 
         GlStateManager.pushMatrix();
-        drawFluidSide(tess, buf, sprite, fillPercent, alpha, lMapX, lMapY);
+        drawFluidSide(tess, buf, sprite, fillPercent, r, g, b, alpha, lMapX, lMapY);
         for (int i = 0; i < 3; i++) {
             GlStateManager.rotate(90F, 0F, 1F, 0F);
-            drawFluidSide(tess, buf, sprite, fillPercent, alpha, lMapX, lMapY);
+            drawFluidSide(tess, buf, sprite, fillPercent, r, g, b, alpha, lMapX, lMapY);
         }
         GlStateManager.popMatrix();
 
         if (fillPercent < 1F) {
             double yMax = fillPercent * (d + d);
             buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_LMAP_COLOR);
-            buf.pos(-d, yMax, -d).tex(sprite.getMinU(), sprite.getMinV()).lightmap(lMapX, lMapY).color(1F, 1F, 1F, alpha).endVertex();
-            buf.pos(-d, yMax, d).tex(sprite.getMinU(), sprite.getMaxV()).lightmap(lMapX, lMapY).color(1F, 1F, 1F, alpha).endVertex();
-            buf.pos(d, yMax, d).tex(sprite.getMaxU(), sprite.getMaxV()).lightmap(lMapX, lMapY).color(1F, 1F, 1F, alpha).endVertex();
-            buf.pos(d, yMax, -d).tex(sprite.getMaxU(), sprite.getMinV()).lightmap(lMapX, lMapY).color(1F, 1F, 1F, alpha).endVertex();
+            buf.pos(-d, yMax, -d).tex(sprite.getMinU(), sprite.getMinV()).lightmap(lMapX, lMapY).color(r, g, b, alpha).endVertex();
+            buf.pos(-d, yMax, d).tex(sprite.getMinU(), sprite.getMaxV()).lightmap(lMapX, lMapY).color(r, g, b, alpha).endVertex();
+            buf.pos(d, yMax, d).tex(sprite.getMaxU(), sprite.getMaxV()).lightmap(lMapX, lMapY).color(r, g, b, alpha).endVertex();
+            buf.pos(d, yMax, -d).tex(sprite.getMaxU(), sprite.getMinV()).lightmap(lMapX, lMapY).color(r, g, b, alpha).endVertex();
             tess.draw();
         }
 
@@ -114,15 +120,15 @@ public class RenderTileTank<T extends TileTank> extends TileEntitySpecialRendere
     }
 
     private static void drawFluidSide(Tessellator tess, BufferBuilder buf, TextureAtlasSprite sprite,
-                                      float height, float alpha, int lMapX, int lMapY) {
+                                      float height, float r, float g, float b, float alpha, int lMapX, int lMapY) {
         buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_LMAP_COLOR);
         double uMin = sprite.getInterpolatedU(d * 8D), uMax = sprite.getInterpolatedU(16D - d * 8D);
         double vMin = sprite.getMinV(), vMax = sprite.getInterpolatedV(height * 16D);
         double yMax = height * (d + d);
-        buf.pos(-d, yMax, d).tex(uMin, vMin).lightmap(lMapX, lMapY).color(1F, 1F, 1F, alpha).endVertex();
-        buf.pos(-d, 0D, d).tex(uMin, vMax).lightmap(lMapX, lMapY).color(1F, 1F, 1F, alpha).endVertex();
-        buf.pos(d, 0D, d).tex(uMax, vMax).lightmap(lMapX, lMapY).color(1F, 1F, 1F, alpha).endVertex();
-        buf.pos(d, yMax, d).tex(uMax, vMin).lightmap(lMapX, lMapY).color(1F, 1F, 1F, alpha).endVertex();
+        buf.pos(-d, yMax, d).tex(uMin, vMin).lightmap(lMapX, lMapY).color(r, g, b, alpha).endVertex();
+        buf.pos(-d, 0D, d).tex(uMin, vMax).lightmap(lMapX, lMapY).color(r, g, b, alpha).endVertex();
+        buf.pos(d, 0D, d).tex(uMax, vMax).lightmap(lMapX, lMapY).color(r, g, b, alpha).endVertex();
+        buf.pos(d, yMax, d).tex(uMax, vMin).lightmap(lMapX, lMapY).color(r, g, b, alpha).endVertex();
         tess.draw();
     }
 
