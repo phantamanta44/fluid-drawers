@@ -13,4 +13,7 @@ public class FluidDrawersConfig {
     @Config.RangeInt(min = 1)
     public static int baseCapacityDowngraded = 1000;
 
+    @Config.Comment("Whether fluid names should be shown or not when drawers have the quantity display enabled via a quantify key.")
+    public static boolean quantifyShowsFluidName = true;
+
 }

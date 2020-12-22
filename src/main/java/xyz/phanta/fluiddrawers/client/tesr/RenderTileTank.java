@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
+import xyz.phanta.fluiddrawers.FluidDrawersConfig;
 import xyz.phanta.fluiddrawers.drawers.FluidDrawer;
 import xyz.phanta.fluiddrawers.tile.TileTank;
 
@@ -42,21 +43,36 @@ public class RenderTileTank<T extends TileTank> extends TileEntitySpecialRendere
 
         if (tile.getAttributes().isShowingQuantity()) {
             FontRenderer fr = getFontRenderer();
-            String qtyLabel = String.format("%,d mB", fluid.amount);
-            float halfWidth = fr.getStringWidth(qtyLabel) / 2F;
+            String nameLabel = fluid.getLocalizedName(), qtyLabel = String.format("%,d mB", fluid.amount);
+            float nameHalfWidth = fr.getStringWidth(nameLabel) / 2F, qtyHalfWidth = fr.getStringWidth(qtyLabel) / 2F;
+
             GlStateManager.pushMatrix();
             GlStateManager.scale(1F / 128F, -1F / 128F, 1F / 128F);
             GlStateManager.rotate(180F, 0F, 1F, 0F);
-            GlStateManager.translate(-64F - halfWidth, -8F - fr.FONT_HEIGHT / 2F, 0.01F); // extra 0.01 fixes z-fighting
-            fr.drawString(qtyLabel, 0, 0, 0xFFFFFFFF);
+            GlStateManager.translate(-64F, -8F - fr.FONT_HEIGHT / 2F, 0.01F); // extra 0.01 fixes z-fighting
+            renderLabelText(fr, nameLabel, nameHalfWidth, qtyLabel, qtyHalfWidth);
             for (int i = 0; i < 3; i++) {
-                GlStateManager.translate(64F + halfWidth + 0.01F, 0F, -64F + halfWidth - 0.01F);
+                GlStateManager.translate(64.01F, 0F, -64.01F);
                 GlStateManager.rotate(90F, 0F, 1F, 0F);
-                fr.drawString(qtyLabel, 0, 0, 0xFFFFFFFF);
+                renderLabelText(fr, nameLabel, nameHalfWidth, qtyLabel, qtyHalfWidth);
             }
             GlStateManager.popMatrix();
         }
 
+        GlStateManager.popMatrix();
+    }
+
+    private static void renderLabelText(FontRenderer fr, String line1, float halfWidth1, String line2, float halfWidth2) {
+        if (FluidDrawersConfig.quantifyShowsFluidName) {
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(-halfWidth1, -16F, 0F);
+            fr.drawString(line1, 0, 0, 0xFFFFFFFF);
+            GlStateManager.popMatrix();
+        }
+
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(-halfWidth2, 0F, 0F);
+        fr.drawString(line2, 0, 0, 0xFFFFFFFF);
         GlStateManager.popMatrix();
     }
 
