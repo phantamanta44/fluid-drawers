@@ -104,7 +104,7 @@ public interface FluidDrawer {
 
     default boolean isEmpty() {
         FluidStack fluid = getStoredFluid();
-        return fluid != null && fluid.amount > 0;
+        return fluid == null || fluid.amount <= 0;
     }
 
 }
