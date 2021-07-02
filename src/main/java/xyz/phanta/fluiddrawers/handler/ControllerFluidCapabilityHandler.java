@@ -23,6 +23,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import xyz.phanta.fluiddrawers.FluidDrawersMod;
 import xyz.phanta.fluiddrawers.drawers.FluidControllerProxy;
 import xyz.phanta.fluiddrawers.drawers.FluidDrawerController;
+import xyz.phanta.fluiddrawers.util.BlockInteractionUtils;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
@@ -69,10 +70,8 @@ public class ControllerFluidCapabilityHandler {
         FluidActionResult result = FluidUtil.tryEmptyContainer(container,
                 Objects.requireNonNull(tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face)),
                 Integer.MAX_VALUE, player, !player.world.isRemote);
-        if (result.success) {
-            if (!player.world.isRemote && !player.capabilities.isCreativeMode) {
-                player.setHeldItem(hand, result.result);
-            }
+        if (result.success && !player.world.isRemote) {
+            BlockInteractionUtils.deductHeldAndGiveItem(player, result.result, hand);
         }
         return true;
     }

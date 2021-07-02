@@ -1,5 +1,6 @@
 package xyz.phanta.fluiddrawers.util;
 
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -27,19 +28,31 @@ public class BlockInteractionUtils {
         }
         FluidActionResult result = FluidUtil.tryFillContainer(stack, tank, Integer.MAX_VALUE, player, true);
         if (result.success) {
-            if (!player.capabilities.isCreativeMode) {
-                player.setHeldItem(hand, result.result);
-            }
+            deductHeldAndGiveItem(player, result.result, hand);
             return true;
         }
         result = FluidUtil.tryEmptyContainer(stack, tank, Integer.MAX_VALUE, player, true);
         if (result.success) {
-            if (!player.capabilities.isCreativeMode) {
-                player.setHeldItem(hand, result.result);
-            }
+            deductHeldAndGiveItem(player, result.result, hand);
             return true;
         }
         return false;
+    }
+
+    public static void deductHeldAndGiveItem(EntityPlayer player, ItemStack toGiveStack, EnumHand hand) {
+        if (!player.capabilities.isCreativeMode) {
+            ItemStack heldStack = player.getHeldItem(hand);
+            heldStack.shrink(1);
+            if (heldStack.isEmpty()) {
+                player.setHeldItem(hand, toGiveStack);
+            } else if (!player.inventory.addItemStackToInventory(toGiveStack)) {
+                EntityItem itemEntity = player.dropItem(toGiveStack, false);
+                if (itemEntity != null) {
+                    itemEntity.setNoPickupDelay();
+                    itemEntity.setOwner(player.getName());
+                }
+            }
+        }
     }
 
 }
