@@ -1,6 +1,8 @@
 package xyz.phanta.fluiddrawers.inventory.slot;
 
+import com.jaquadro.minecraft.storagedrawers.core.ModItems;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.SlotItemHandler;
 import xyz.phanta.fluiddrawers.util.UpgradeItemHandler;
 
@@ -15,7 +17,19 @@ public class SlotDrawerUpgrade extends SlotItemHandler {
 
     @Override
     public boolean canTakeStack(EntityPlayer player) {
-        return getStack().isEmpty() || inv.canTakeStack(getSlotIndex());
+        ItemStack stack = getStack();
+
+        if (stack.isEmpty()) {
+            return true;
+        }
+
+        if (!inv.canTakeStack(getSlotIndex())) {
+            return false;
+        }
+
+        return stack.getItem() != ModItems.upgradeCreative
+                || player == null
+                || player.capabilities.isCreativeMode;
     }
 
 }
