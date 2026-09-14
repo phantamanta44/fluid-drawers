@@ -3,6 +3,7 @@ package xyz.phanta.fluiddrawers.item.block;
 import com.jaquadro.minecraft.storagedrawers.StorageDrawers;
 import com.jaquadro.minecraft.storagedrawers.api.storage.IDrawerAttributes;
 import com.jaquadro.minecraft.storagedrawers.api.storage.IDrawerAttributesModifiable;
+import com.jaquadro.minecraft.storagedrawers.block.tile.tiledata.UpgradeData;
 import io.github.phantamanta44.libnine.client.model.ParameterizedItemModel;
 import io.github.phantamanta44.libnine.item.L9ItemBlockStated;
 import net.minecraft.block.state.IBlockState;
@@ -17,10 +18,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fluids.FluidStack;
 import xyz.phanta.fluiddrawers.FluidDrawersConfig;
 import xyz.phanta.fluiddrawers.block.base.BlockTankBase;
 import xyz.phanta.fluiddrawers.constant.NameConst;
 import xyz.phanta.fluiddrawers.tile.TileTank;
+import xyz.phanta.fluiddrawers.util.SimpleDrawerAttributes;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -64,11 +67,29 @@ public class ItemBlockTank extends L9ItemBlockStated implements ParameterizedIte
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flags) {
         super.addInformation(stack, world, tooltip, flags);
-        tooltip.add(I18n.format(NameConst.INFO_TANK_CAPACITY, FluidDrawersConfig.baseCapacity));
+
         NBTTagCompound stackTag = stack.getTagCompound();
         if (stackTag != null && stackTag.hasKey("Tile", Constants.NBT.TAG_COMPOUND)) {
-            tooltip.add(TextFormatting.YELLOW + I18n.format("storagedrawers.drawers.sealed"));
+            NBTTagCompound tileTag = stackTag.getCompoundTag("Tile");
+            SimpleDrawerAttributes attributes = new SimpleDrawerAttributes();
+            UpgradeData upgrades = new UpgradeData(7);
+            upgrades.setDrawerAttributes(attributes);
+            upgrades.readFromNBT(tileTag);
+            int capacity = attributes.isUnlimitedStorage() || attributes.isUnlimitedVending()
+                    ? Integer.MAX_VALUE
+                    : (upgrades.hasOneStackUpgrade()
+                    ? FluidDrawersConfig.baseCapacityDowngraded
+                    : FluidDrawersConfig.baseCapacity) * upgrades.getStorageMultiplier();
+
+            FluidStack fluid = FluidStack.loadFluidStackFromNBT(tileTag.getCompoundTag("Drawer").getCompoundTag("Fluid"));
+            if (fluid != null) {
+                tooltip.add(fluid.getLocalizedName());
+                tooltip.add(I18n.format(NameConst.INFO_TANK_CONTENTS, fluid.amount, capacity));
+            } else {
+                tooltip.add(I18n.format(NameConst.INFO_TANK_CAPACITY, capacity));
+            }
+        } else {
+            tooltip.add(I18n.format(NameConst.INFO_TANK_CAPACITY, FluidDrawersConfig.baseCapacity));
         }
     }
-
 }
