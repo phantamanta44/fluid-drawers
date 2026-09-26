@@ -13,4 +13,5 @@ public class NameConst {
     private static final String INFO_KEY = FdConst.MOD_ID + ".info.";
     public static final String INFO_TANK_CAPACITY = INFO_KEY + "tank_capacity";
     public static final String INFO_TANK_CONTENTS = INFO_KEY + "tank_contents";
+    public static final String INFO_INFINITE = INFO_KEY + "infinite";
 }

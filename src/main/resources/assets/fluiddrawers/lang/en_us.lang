@@ -7,3 +7,4 @@ fluiddrawers.container.tank=Tank
 
 fluiddrawers.info.tank_capacity=Holds %,d mB per tank
 fluiddrawers.info.tank_contents=%,d / %,d mB
+fluiddrawers.info.infinite=Infinite

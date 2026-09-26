@@ -15,7 +15,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
@@ -69,27 +68,36 @@ public class ItemBlockTank extends L9ItemBlockStated implements ParameterizedIte
         super.addInformation(stack, world, tooltip, flags);
 
         NBTTagCompound stackTag = stack.getTagCompound();
-        if (stackTag != null && stackTag.hasKey("Tile", Constants.NBT.TAG_COMPOUND)) {
-            NBTTagCompound tileTag = stackTag.getCompoundTag("Tile");
-            SimpleDrawerAttributes attributes = new SimpleDrawerAttributes();
-            UpgradeData upgrades = new UpgradeData(7);
-            upgrades.setDrawerAttributes(attributes);
-            upgrades.readFromNBT(tileTag);
-            int capacity = attributes.isUnlimitedStorage() || attributes.isUnlimitedVending()
-                    ? Integer.MAX_VALUE
-                    : (upgrades.hasOneStackUpgrade()
-                    ? FluidDrawersConfig.baseCapacityDowngraded
-                    : FluidDrawersConfig.baseCapacity) * upgrades.getStorageMultiplier();
-
-            FluidStack fluid = FluidStack.loadFluidStackFromNBT(tileTag.getCompoundTag("Drawer").getCompoundTag("Fluid"));
-            if (fluid != null) {
-                tooltip.add(fluid.getLocalizedName());
-                tooltip.add(I18n.format(NameConst.INFO_TANK_CONTENTS, fluid.amount, capacity));
-            } else {
-                tooltip.add(I18n.format(NameConst.INFO_TANK_CAPACITY, capacity));
-            }
-        } else {
+        if (stackTag == null || !stackTag.hasKey("Tile", Constants.NBT.TAG_COMPOUND)) {
             tooltip.add(I18n.format(NameConst.INFO_TANK_CAPACITY, FluidDrawersConfig.baseCapacity));
+            return;
         }
+
+        NBTTagCompound tileTag = stackTag.getCompoundTag("Tile");
+        SimpleDrawerAttributes attributes = new SimpleDrawerAttributes();
+        UpgradeData upgrades = new UpgradeData(7);
+        upgrades.setDrawerAttributes(attributes);
+        upgrades.readFromNBT(tileTag);
+
+        FluidStack fluid = FluidStack.loadFluidStackFromNBT(tileTag.getCompoundTag("Drawer").getCompoundTag("Fluid"));
+        if (fluid == null || fluid.amount <= 0) {
+            tooltip.add(I18n.format(NameConst.INFO_TANK_CAPACITY, getSealedCapacity(attributes, upgrades)));
+            return;
+        }
+
+        tooltip.add(fluid.getLocalizedName());
+        if (attributes.isUnlimitedVending()) {
+            tooltip.add(I18n.format(NameConst.INFO_INFINITE));
+        } else {
+            tooltip.add(I18n.format(NameConst.INFO_TANK_CONTENTS, fluid.amount, getSealedCapacity(attributes, upgrades)));
+        }
+    }
+
+    private int getSealedCapacity(IDrawerAttributes attributes, UpgradeData upgrades) {
+        return attributes.isUnlimitedStorage()
+                ? Integer.MAX_VALUE
+                : (upgrades.hasOneStackUpgrade()
+                ? FluidDrawersConfig.baseCapacityDowngraded
+                : FluidDrawersConfig.baseCapacity) * upgrades.getStorageMultiplier();
     }
 }
