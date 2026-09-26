@@ -16,4 +16,7 @@ public class FluidDrawersConfig {
     @Config.Comment("Whether fluid names should be shown or not when drawers have the quantity display enabled via a quantify key.")
     public static boolean quantifyShowsFluidName = true;
 
+    @Config.Comment("Whether or not the contents of sealed drawers should be shown in their tooltips.")
+    public static boolean showSealedDrawerContents = true;
+
 }

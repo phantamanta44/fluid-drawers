@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
@@ -70,6 +71,11 @@ public class ItemBlockTank extends L9ItemBlockStated implements ParameterizedIte
         NBTTagCompound stackTag = stack.getTagCompound();
         if (stackTag == null || !stackTag.hasKey("Tile", Constants.NBT.TAG_COMPOUND)) {
             tooltip.add(I18n.format(NameConst.INFO_TANK_CAPACITY, FluidDrawersConfig.baseCapacity));
+            return;
+        }
+
+        if (!FluidDrawersConfig.showSealedDrawerContents) {
+            tooltip.add(TextFormatting.YELLOW + I18n.format("storagedrawers.drawers.sealed"));
             return;
         }
 
