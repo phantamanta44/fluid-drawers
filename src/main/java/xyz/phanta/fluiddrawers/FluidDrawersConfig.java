@@ -2,7 +2,7 @@ package xyz.phanta.fluiddrawers;
 
 import net.minecraftforge.common.config.Config;
 
-@Config(modid = FluidDrawersMod.MOD_ID)
+@Config(modid = FdConst.MOD_ID)
 public class FluidDrawersConfig {
 
     @Config.Comment("The base capacity, in millibuckets (mB), of a basic storage tank (without a capacity downgrade).")

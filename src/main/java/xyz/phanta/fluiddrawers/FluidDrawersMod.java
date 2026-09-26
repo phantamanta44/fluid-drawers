@@ -11,13 +11,10 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.Logger;
 import xyz.phanta.fluiddrawers.init.FdBlocks;
 
-@Mod(modid = FluidDrawersMod.MOD_ID, version = FluidDrawersMod.VERSION, useMetadata = true)
+@Mod(modid = FdConst.MOD_ID, version = FdConst.VERSION, useMetadata = true)
 public class FluidDrawersMod extends Virtue {
 
-    public static final String MOD_ID = "fluiddrawers";
-    public static final String VERSION = "1.0.7";
-
-    @Mod.Instance(MOD_ID)
+    @Mod.Instance(FdConst.MOD_ID)
     public static FluidDrawersMod INSTANCE;
 
     @SidedProxy(
@@ -29,7 +26,7 @@ public class FluidDrawersMod extends Virtue {
     public static Logger LOGGER;
 
     public FluidDrawersMod() {
-        super(MOD_ID, new L9CreativeTab(MOD_ID, () -> new ItemStack(FdBlocks.TANK)));
+        super(FdConst.MOD_ID, new L9CreativeTab(FdConst.MOD_ID, () -> new ItemStack(FdBlocks.TANK)));
     }
 
     @Mod.EventHandler

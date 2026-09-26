@@ -28,6 +28,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import xyz.phanta.fluiddrawers.FdConst;
 import xyz.phanta.fluiddrawers.FluidDrawersConfig;
 import xyz.phanta.fluiddrawers.FluidDrawersMod;
 import xyz.phanta.fluiddrawers.constant.NameConst;
@@ -45,7 +46,7 @@ import java.util.EnumSet;
 import java.util.Objects;
 import java.util.UUID;
 
-@RegisterTile(FluidDrawersMod.MOD_ID)
+@RegisterTile(FdConst.MOD_ID)
 public class TileTank extends ChamTileEntity implements FluidDrawerHost, DrawerUpgradable, ISealable, IProtectable, IWorldNameable {
 
     private final CustomNameData customNameData = new CustomNameData(NameConst.CONT_TANK);
