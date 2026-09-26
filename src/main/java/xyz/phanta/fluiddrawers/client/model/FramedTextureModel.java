@@ -5,15 +5,17 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonObject;
 import com.jaquadro.minecraft.chameleon.resources.IconUtil;
-import io.github.phantamanta44.libnine.client.model.L9Models;
-import io.github.phantamanta44.libnine.util.helper.ResourceUtils;
+import io.github.phantamanta44.libnine.client.model.L9CachingModelLoader;
 import io.github.phantamanta44.libnine.util.render.model.BakedQuadList;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.*;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.BakedQuadRetextured;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemOverrideList;
+import net.minecraft.client.renderer.block.model.ModelBlock;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.VertexFormat;
-import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,12 +24,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.client.model.ICustomModelLoader;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.animation.IClip;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import xyz.phanta.fluiddrawers.FdConst;
 import xyz.phanta.fluiddrawers.client.model.base.DelegatingBakedModel;
 import xyz.phanta.fluiddrawers.client.util.FramedModelData;
 import xyz.phanta.fluiddrawers.item.base.FramedItem;
@@ -45,7 +47,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FramedTextureModel implements IModel {
-
 
     private final ResourceLocation backingModelLoc;
     private final IModel backingModel;
@@ -134,28 +135,16 @@ public class FramedTextureModel implements IModel {
         return backingModel.asVanillaModel();
     }
 
-    public static class Loader implements ICustomModelLoader {
+    public static class Loader extends L9CachingModelLoader {
 
-        @Override
-        public void onResourceManagerReload(IResourceManager resourceManager) {
-            // NO-OP
+        public Loader() {
+            super(FdConst.MOD_ID + ":framed");
         }
 
         @Override
-        public boolean accepts(ResourceLocation modelLocation) {
-            try {
-                JsonObject dto = ResourceUtils.getAsJson(L9Models.getRealModelLocation(modelLocation)).getAsJsonObject();
-                return dto.has("9s") && dto.get("9s").getAsString().equals("fluiddrawers:framed");
-            } catch (Exception e) {
-                return false;
-            }
-        }
-
-        @Override
-        public IModel loadModel(ResourceLocation modelLocation) throws Exception {
-            JsonObject dto = ResourceUtils.getAsJson(L9Models.getRealModelLocation(modelLocation)).getAsJsonObject();
-            ResourceLocation backingModelLoc = new ResourceLocation(dto.get("backing").getAsString());
-            JsonObject defTexDto = dto.getAsJsonObject("default_textures");
+        public IModel parseModel(JsonObject modelDto) throws Exception {
+            ResourceLocation backingModelLoc = new ResourceLocation(modelDto.get("backing").getAsString());
+            JsonObject defTexDto = modelDto.getAsJsonObject("default_textures");
             return new FramedTextureModel(backingModelLoc, ModelLoaderRegistry.getModel(backingModelLoc),
                     new ResourceLocation(defTexDto.get("front").getAsString()),
                     new ResourceLocation(defTexDto.get("side").getAsString()),
@@ -230,7 +219,7 @@ public class FramedTextureModel implements IModel {
         @Override
         public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
             if (state instanceof IExtendedBlockState) {
-                FramedModelData modelData = ((IExtendedBlockState)state).getValue(FramedModelData.PROP);
+                FramedModelData modelData = ((IExtendedBlockState) state).getValue(FramedModelData.PROP);
                 if (modelData != null) {
                     return getFramedModelInstance(modelData).getQuads(state, side, rand);
                 }
@@ -265,7 +254,7 @@ public class FramedTextureModel implements IModel {
                                                @Nullable World world, @Nullable EntityLivingBase entity) {
                 Item item = stack.getItem();
                 if (item instanceof FramedItem) {
-                    return getFramedModelInstance(new FramedModelData(((FramedItem)item).getMaterialData(stack)));
+                    return getFramedModelInstance(new FramedModelData(((FramedItem) item).getMaterialData(stack)));
                 }
                 return BakedFramedTextureModel.this;
             }
