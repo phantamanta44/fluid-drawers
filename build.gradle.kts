@@ -5,7 +5,7 @@ plugins {
 }
 
 val modId: String = "fluiddrawers"
-version = "1.0.7"
+version = "1.0.8"
 group = "xyz.phanta.fluiddrawers"
 
 val minecraftVersion: String = "1.12.2"
