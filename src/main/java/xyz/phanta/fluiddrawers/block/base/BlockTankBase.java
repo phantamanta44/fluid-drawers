@@ -285,6 +285,9 @@ public abstract class BlockTankBase extends L9BlockStated implements INetworked 
             if (tile.isSealed() || (StorageDrawers.config.cache.keepContentsOnBreak && hasContents)) {
                 NBTTagCompound tiledata = new NBTTagCompound();
                 tile.writeToNBT(tiledata);
+                tiledata.removeTag("x");
+                tiledata.removeTag("y");
+                tiledata.removeTag("z");
                 tag.setTag("Tile", tiledata);
             }
             if (tile.hasCustomName()) {
